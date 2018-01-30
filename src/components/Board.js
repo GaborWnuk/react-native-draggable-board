@@ -13,8 +13,8 @@ import {
 
 class Board extends React.Component {
   MAX_RANGE = 100
-  MAX_DEG = 30
-  TRESHOLD = 35
+  MAX_DEG = 15
+  TRESHOLD = 100
 
   constructor(props) {
     super(props);
@@ -220,7 +220,7 @@ class Board extends React.Component {
   movingStyle(zIndex) {
     var interpolatedRotateAnimation = this.state.rotate.interpolate({
       inputRange: [-this.MAX_RANGE, 0, this.MAX_RANGE],
-      outputRange: [`-${this.MAX_DEG}deg`, '0deg', `${this.MAX_DEG}deg`]
+      outputRange: [`${this.MAX_DEG}deg`, '0deg', `-${this.MAX_DEG}deg`]
     });
     return {
       transform: [{rotate: interpolatedRotateAnimation}],
