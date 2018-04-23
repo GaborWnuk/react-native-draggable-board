@@ -1,21 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import {
-  View,
-  ListView
-} from 'react-native';
+import { View, ListView } from "react-native";
 
 class Column extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      dataSource: this.dataSourceWithItems([])
+      dataSource: this.dataSourceWithItems([]),
     };
   }
 
   componentWillMount() {
-    this.props.rowRepository.addListener(this.props.column.id(), 'reload', this.reload.bind(this));
+    this.props.rowRepository.addListener(this.props.column.id(), "reload", this.reload.bind(this));
   }
 
   reload() {
@@ -54,7 +51,7 @@ class Column extends React.Component {
   updateItemWithLayout(item) {
     return () => {
       this.props.rowRepository.updateItemWithLayout(this.props.column.id(), item);
-    }
+    };
   }
 
   setColumnRef(ref) {
@@ -70,10 +67,10 @@ class Column extends React.Component {
       onPressIn: this.onPressIn(item),
       onPress: this.onPress(item),
       hidden: item.isHidden(),
-      item: item
+      item: item,
     };
     return (
-      <View ref={(ref) => this.setItemRef(item, ref)} onLayout={this.updateItemWithLayout(item)}>
+      <View ref={ref => this.setItemRef(item, ref)} onLayout={this.updateItemWithLayout(item)}>
         {this.props.renderWrapperRow(props)}
       </View>
     );
@@ -88,6 +85,8 @@ class Column extends React.Component {
     const column = this.props.rowRepository.column(this.props.column.id());
     const liveOffset = event.nativeEvent.contentOffset.y;
     this.scrollingDown = liveOffset > column.scrollOffset();
+
+    this.props.onScroll(event);
   }
 
   endScrolling(event) {
@@ -131,12 +130,13 @@ class Column extends React.Component {
       <View
         style={{ flex: 1 }}
         ref={this.setColumnRef.bind(this)}
-        onLayout={this.updateColumnWithLayout.bind(this)}>
+        onLayout={this.updateColumnWithLayout.bind(this)}
+      >
         <ListView
           dataSource={this.dataSource()}
           ref={this.setListView.bind(this)}
           onScroll={this.handleScroll.bind(this)}
-          scrollEventThrottle={0}
+          scrollEventThrottle={1}
           onMomentumScrollEnd={this.onMomentumScrollEnd.bind(this)}
           onScrollEndDrag={this.onScrollEndDrag.bind(this)}
           onChangeVisibleRows={this.handleChangeVisibleItems.bind(this)}
@@ -144,11 +144,10 @@ class Column extends React.Component {
           scrollEnabled={!this.props.movingMode}
           onContentSizeChange={this.onContentSizeChange.bind(this)}
           enableEmptySections={true}
-         />
+        />
       </View>
     );
   }
-};
+}
 
 export default Column;
-
